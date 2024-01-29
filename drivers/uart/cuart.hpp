@@ -29,8 +29,8 @@
 #include <sys/wait.h>  /* Wait for Process Termination */
 #include <stdlib.h>    /* General Utilities */
 #include <fcntl.h>
-#include "../communicationDriver/ICommunicationDriver.hpp"
-#include "../status/status.hpp"
+#include "../include/communicationDriver/ICommunicationDriver.hpp"
+#include "../include/status/status.hpp"
 
 class uart : protected ICommunicationDriver
 {

@@ -2,11 +2,11 @@
 #include <string>
 #include <vector>
 
-#include "../include/uart/cuart.hpp"
+#include "../drivers/uart/cuart.hpp"
 
 int main(int argc, char **argv)
 {
-    uart serial("/dev/ttyS7");
+    uart serial("/dev/ttyS2");
 
     do
     {
