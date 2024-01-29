@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-#include "../drivers/uart/cuart.hpp"
+#include "../protocols/low_level/uart/cuart.hpp"
 
 int main(int argc, char **argv)
 {

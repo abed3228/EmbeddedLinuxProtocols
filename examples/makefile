@@ -12,7 +12,7 @@ OUT_DIR = $(MAIN_DIR)/out
 BUILD_DIR = $(MAIN_DIR)/bin
 
 #UART
-UART_OBJ_DIR = ../drivers/uart/
+UART_OBJ_DIR = ../protocols/low_level/uart/
 UART_SOURCES = $(wildcard $(UART_OBJ_DIR)*.cpp)
 UART_OBJ = uart.o
 UART_READ = uart_read.cpp
