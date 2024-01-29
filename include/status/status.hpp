@@ -2,7 +2,7 @@
 #ifndef STATUS_HPP
 #define STATUS_HPP
 
-enum class status
+enum class status_t
 {
     SUCCESS = 0,
     FAILURE,

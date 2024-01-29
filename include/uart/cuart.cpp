@@ -1,6 +1,6 @@
-#include "CUART.hpp"
+#include "cuart.hpp"
 
-UART::UART(const std::string path)
+uart::uart(const std::string path)
 {
     m_isOpen = false;
     m_fd = -1;
@@ -21,7 +21,7 @@ UART::UART(const std::string path)
         throw std::runtime_error("Failed to configure port");
     }
 }
-UART::UART(std::string path, BaudRate baudRate, char parity, uint32_t dataBits,
+uart::uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits,
            uint32_t stopBits, uint32_t timeout = 5, uint32_t vmin = 0)
 {
     m_isOpen = false;
@@ -43,15 +43,15 @@ UART::UART(std::string path, BaudRate baudRate, char parity, uint32_t dataBits,
         throw std::runtime_error("Failed to configure port");
     }
 }
-UART::~UART()
+uart::~uart()
 {
     closePort();
 }
-bool UART::isOpened()
+bool uart::isOpened()
 {
     return m_isOpen;
 }
-bool UART::openPort(std::string path)
+bool uart::openPort(std::string path)
 {
     // Open the serial port for read and write, without controlling terminal
     m_fd = open(path.c_str(), O_RDWR | O_NOCTTY);
@@ -60,13 +60,13 @@ bool UART::openPort(std::string path)
     m_isOpen = true;
     return true;
 }
-bool UART::closePort()
+bool uart::closePort()
 {
     if (!isOpened() && close(m_fd))
         return true;
     return false;
 }
-bool UART::initSerialInterface()
+bool uart::initSerialInterface()
 {
     // Get the current configuration of the serial interface
     if (tcgetattr(m_fd, &m_options) != 0)
@@ -102,22 +102,22 @@ bool UART::initSerialInterface()
 
     return true;
 }
-ssize_t UART::writePort(const std::string buff)
+ssize_t uart::writePort(const std::string buff)
 {
     return write(m_fd, buff.c_str(), buff.length());
-    ;
 }
-ssize_t UART::readPort(std::string &buff, uint32_t sizeRead)
+ssize_t uart::readPort(std::string &buff, uint32_t sizeRead)
 {
+    buff.resize(sizeRead);
     return read(m_fd, &buff[0], sizeRead);
 }
 
-bool UART::setBaudRate(BaudRate baudRate)
+bool uart::setBaudRate(BaudRate baudRate)
 {
     m_baudRate = baudRate;
     return true;
 }
-bool UART::setParity(char parity)
+bool uart::setParity(char parity)
 {
     // Clear current parity settings
     m_parity &= ~(PARENB | PARODD);
@@ -145,7 +145,7 @@ bool UART::setParity(char parity)
     return true; // Indicate successful setting
 }
 
-bool UART::setStopBits(uint32_t stopBits)
+bool uart::setStopBits(uint32_t stopBits)
 {
     switch (stopBits)
     {
@@ -159,7 +159,7 @@ bool UART::setStopBits(uint32_t stopBits)
     }
     return true; // Indicate successful setting
 }
-bool UART::setDataBits(uint32_t dataBits)
+bool uart::setDataBits(uint32_t dataBits)
 {
     // Clear the current data bits setting
     m_dataBits &= ~CSIZE;
@@ -185,7 +185,7 @@ bool UART::setDataBits(uint32_t dataBits)
     return true; // Indicate successful setting
 }
 
-bool UART::setTimeouts(uint32_t timeouts)
+bool uart::setTimeouts(uint32_t timeouts)
 {
     // Set read timeout (vtime) based on the provided timeouts parameter
     // vtime is set in tenths of a second (deciseconds)
@@ -193,7 +193,7 @@ bool UART::setTimeouts(uint32_t timeouts)
     return true; // Indicate successful setting
 }
 
-bool UART::setMinCharacter(uint32_t minCharacter)
+bool uart::setMinCharacter(uint32_t minCharacter)
 {
     // Set the minimum number of characters to read based on the input parameter
     m_vmin = minCharacter;

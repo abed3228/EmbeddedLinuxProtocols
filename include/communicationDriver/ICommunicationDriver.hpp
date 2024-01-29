@@ -14,14 +14,14 @@
 #include <string>
 #include <vector>
 
-class CommunicationDriver
+class ICommunicationDriver
 {
 protected:
     int m_fd;
     uint32_t m_isOpen;
 
 public:
-    virtual ~CommunicationDriver(){};
+    virtual ~ICommunicationDriver(){};
     /**
      * @brief chcek connection if is available or not
      * @return true if the connection is established
@@ -40,13 +40,6 @@ public:
      * @return false if the open connection is failed
      */
     virtual bool openPort(std::string path) = 0;
-    /**
-     * @brief
-     *
-     * @return true
-     * @return false
-     */
-    virtual bool init(std::string path) = 0;
     /**
      * @brief
      *

@@ -2,18 +2,16 @@
 #include <string>
 #include <vector>
 
-#include "../include/UART/CUART.hpp"
+#include "../drivers/uart/cuart.hpp"
 
 int main(int argc, char **argv)
 {
-    UART uart;
-
-    uart.init("/dev/ttyS2");
+    uart serial("/dev/ttyS7");
 
     do
     {
         std::string strRead;
-        uart.readPort(strRead, 255);
+        std::cout << serial.readPort(strRead, 255) << " " << strRead << std::endl;
         sleep(1);
     } while (true);
 

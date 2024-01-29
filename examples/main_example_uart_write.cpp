@@ -2,17 +2,16 @@
 #include <string>
 #include <vector>
 
-#include "../include/UART/CUART.hpp"
+#include "../include/uart/cuart.hpp"
 
 int main(int argc, char **argv)
 {
-    UART uart;
-
-    uart.init("/dev/ttyS2");
+    uart serial("/dev/ttyS7");
 
     do
     {
-        uart.writePort("YOUR COMMAND STRING HERE");
+        serial.writePort("YOUR COMMAND STRING HERE");
+        std::cout << "YOUR COMMAND STRING HERE" << std::endl;
         sleep(1);
     } while (true);
 

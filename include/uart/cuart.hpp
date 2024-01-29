@@ -1,10 +1,10 @@
 /**
  * @file CUART.hpp
  * @author Alnkib Abed (abed3228@gmail.com)
- * @brief UART class for handling serial communication.
+ * @brief uart class for handling serial communication.
  * @version 0.2
  *
- * This class provides functionalities for UART (Universal Asynchronous
+ * This class provides functionalities for uart (Universal Asynchronous
  * Receiver/Transmitter) communication including opening and closing ports,
  * configuring the serial interface, and performing read/write operations.
  *
@@ -29,10 +29,10 @@
 #include <sys/wait.h>  /* Wait for Process Termination */
 #include <stdlib.h>    /* General Utilities */
 #include <fcntl.h>
-#include "../CommunicationDriver/ICommunicationDriver.hpp"
+#include "../communicationDriver/ICommunicationDriver.hpp"
 #include "../status/status.hpp"
 
-class UART : protected CommunicationDriver
+class uart : protected ICommunicationDriver
 {
 
 public:
@@ -50,15 +50,15 @@ public:
     };
 
     /**
-     * @brief Constructs a new UART object with default settings.
-     * @param path The device path for the UART interface.
+     * @brief Constructs a new uart object with default settings.
+     * @param path The device path for the uart interface.
      */
-    UART(const std::string path);
+    uart(const std::string path);
 
     /**
-     * @brief Constructs a new UART object with custom settings.
-     * @param path The device path for the UART interface.
-     * @param baudRate The baud rate for the UART communication.
+     * @brief Constructs a new uart object with custom settings.
+     * @param path The device path for the uart interface.
+     * @param baudRate The baud rate for the uart communication.
      * @param parity The parity setting ('N' for None, 'E' for Even, 'O' for Odd).
      * @param dataBits The number of data bits.
      * @param stopBits The number of stop bits.
@@ -68,29 +68,29 @@ public:
      * @default vmin = 0
 
      */
-    UART(std::string path, BaudRate baudRate, char parity, uint32_t dataBits, uint32_t stopBits, uint32_t timeout, uint32_t vmin);
+    uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits, uint32_t stopBits, uint32_t timeout, uint32_t vmin);
 
     /**
-     * @brief Destructor for UART object.
+     * @brief Destructor for uart object.
      */
-    ~UART();
+    ~uart();
 
     /**
-     * @brief Checks if the UART port is open.
+     * @brief Checks if the uart port is open.
      * @return true If the port is open.
      * @return false If the port is closed.
      */
     bool isOpened();
 
     /**
-     * @brief Writes data to the UART port.
+     * @brief Writes data to the uart port.
      * @param buff The data buffer to write.
      * @return ssize_t The number of bytes written or -1 if an error occurred.
      */
     ssize_t writePort(const std::string buff);
 
     /**
-     * @brief Reads data from the UART port.
+     * @brief Reads data from the uart port.
      * @param buff Reference to the buffer where read data will be stored.
      * @param sizeRead The number of bytes to read.
      * @return ssize_t The number of bytes read or -1 if an error occurred.
@@ -107,20 +107,20 @@ private:
     struct termios m_options;
 
     // Private copy constructor (deleted)
-    UART(const UART &) = delete;
+    uart(const uart &) = delete;
     // Private assignment operator (deleted)
-    UART &operator=(const UART &) = delete;
+    uart &operator=(const uart &) = delete;
 
     /**
-     * @brief Opens the UART port with the specified path.
-     * @param path The device path for the UART interface.
+     * @brief Opens the uart port with the specified path.
+     * @param path The device path for the uart interface.
      * @return true If the port was successfully opened.
      * @return false If the port could not be opened.
      */
     bool openPort(std::string path);
 
     /**
-     * @brief Closes the currently opened UART port.
+     * @brief Closes the currently opened uart port.
      * @return true If the port was successfully closed.
      * @return false If the port could not be closed.
      */
@@ -134,7 +134,7 @@ private:
     bool initSerialInterface();
 
     /**
-     * @brief Sets the baud rate for the UART communication.
+     * @brief Sets the baud rate for the uart communication.
      * @param baudRate The baud rate to be set (from the BaudRate enum).
      * @return true If the baud rate was successfully set.
      * @return false If the baud rate could not be set.
@@ -142,7 +142,7 @@ private:
     bool setBaudRate(BaudRate baudRate);
 
     /**
-     * @brief Sets the parity for the UART communication.
+     * @brief Sets the parity for the uart communication.
      * @param parity The parity setting ('N' for None, 'E' for Even, 'O' for Odd).
      * @return true If the parity was successfully set.
      * @return false If the parity could not be set.
@@ -150,7 +150,7 @@ private:
     bool setParity(char parity);
 
     /**
-     * @brief Sets the number of stop bits for the UART communication.
+     * @brief Sets the number of stop bits for the uart communication.
      * @param stopBits The number of stop bits (typically 1 or 2).
      * @return true If the stop bits were successfully set.
      * @return false If the stop bits could not be set.
@@ -158,7 +158,7 @@ private:
     bool setStopBits(uint32_t stopBits);
 
     /**
-     * @brief Sets the number of data bits for the UART communication.
+     * @brief Sets the number of data bits for the uart communication.
      * @param dataBits The number of data bits (typically 5, 6, 7, or 8).
      * @return true If the data bits were successfully set.
      * @return false If the data bits could not be set.
@@ -166,7 +166,7 @@ private:
     bool setDataBits(uint32_t dataBits);
 
     /**
-     * @brief Sets the timeouts for the UART communication.
+     * @brief Sets the timeouts for the uart communication.
      * @param timeouts The read timeout in seconds.
      * @return true If the timeouts were successfully set.
      * @return false If the timeouts could not be set.
@@ -183,12 +183,12 @@ private:
 
     /**
      * @brief default values
-     * @param default_baudRate Default baud rate for UART communication.
-     * @param default_parity Default parity setting for UART communication, 'n' for no parity.
-     * @param default_dataBits Default number of data bits in each character for UART communication.
-     * @param default_stopBits Default number of stop bits used in UART communication.
-     * @param default_timeout Default timeout for read operations in UART communication, in seconds.
-     * @param default_vmin Default minimum number of characters for non-canonical read in UART communication.
+     * @param default_baudRate Default baud rate for uart communication.
+     * @param default_parity Default parity setting for uart communication, 'n' for no parity.
+     * @param default_dataBits Default number of data bits in each character for uart communication.
+     * @param default_stopBits Default number of stop bits used in uart communication.
+     * @param default_timeout Default timeout for read operations in uart communication, in seconds.
+     * @param default_vmin Default minimum number of characters for non-canonical read in uart communication.
      */
     static constexpr BaudRate default_baudRate = BaudRate::BAUD_115200;
     static constexpr uint32_t default_parity = 'n';
