@@ -30,7 +30,7 @@
 #include <stdlib.h>    /* General Utilities */
 #include <fcntl.h>
 #include "../include/communicationDriver/ICommunicationDriver.hpp"
-#include "../include/status/status.hpp"
+#include "../../include/status/status.hpp"
 
 class uart : protected ICommunicationDriver
 {
