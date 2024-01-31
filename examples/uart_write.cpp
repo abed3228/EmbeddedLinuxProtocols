@@ -18,7 +18,7 @@ void signalHandler(int signalNumber)
 
 int main(int argc, char **argv)
 {
-    uart serial("/dev/ttyS7");
+    uart serial("/dev/ttyS0");
     // Set the signal handler for SIGTERM
     std::signal(SIGINT, signalHandler);
 
