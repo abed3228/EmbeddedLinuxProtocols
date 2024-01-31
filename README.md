@@ -1,7 +1,7 @@
 # Embedded Linux Protocols
 ## Libraries for Embedded Linux Protocols:
 
-### Low level drivers
+### Low level Protocols
 - I2C
 - UART 
 - SPI
