@@ -12,12 +12,12 @@ uart::uart(const std::string path)
     setTimeouts(default_timeout);
     setMinCharacter(default_vmin);
 
-    if (!openPort(path))
+    if (!openDevice(path))
         throw std::runtime_error("Failed to open port");
     m_isOpen = true;
     if (!initSerialInterface())
     {
-        closePort();
+        closeDevice();
         throw std::runtime_error("Failed to configure port");
     }
 }
@@ -32,24 +32,24 @@ uart::uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits,
     setParity(parity);
     setStopBits(stopBits);
 
-    if (!openPort(path))
+    if (!openDevice(path))
         throw std::runtime_error("Failed to open port");
     m_isOpen = true;
     if (!initSerialInterface())
     {
-        closePort();
+        closeDevice();
         throw std::runtime_error("Failed to configure port");
     }
 }
 uart::~uart()
 {
-    closePort();
+    closeDevice();
 }
 bool uart::isOpened()
 {
     return m_isOpen;
 }
-bool uart::openPort(std::string path)
+bool uart::openDevice(std::string path)
 {
     // Open the serial port for read and write, without controlling terminal
     m_fd = open(path.c_str(), O_RDWR | O_NOCTTY);
@@ -60,7 +60,7 @@ bool uart::openPort(std::string path)
     m_fdPoll.events = POLLIN;
     return true;
 }
-bool uart::closePort()
+bool uart::closeDevice()
 {
     if (!isOpened() && close(m_fd))
         return true;

@@ -16,21 +16,11 @@
 #ifndef UART_H
 #define UART_H
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <unordered_set>
-#include <algorithm>
 #include <termios.h>   // POSIX terminal control definitions
 #include <unistd.h>    /* Symbolic Constants */
 #include <sys/types.h> /* Primitive System Data Types */
-#include <errno.h>     /* Errors */
-#include <stdio.h>     /* Input/Output */
-#include <sys/wait.h>  /* Wait for Process Termination */
-#include <stdlib.h>    /* General Utilities */
 #include <fcntl.h>
 #include <poll.h>
-#include <time.h>
 #include <chrono>
 #include "../include/communicationDriver/ICommunicationDriver.hpp"
 #include "../../include/status/status.hpp"
@@ -123,14 +113,14 @@ private:
      * @return true If the port was successfully opened.
      * @return false If the port could not be opened.
      */
-    bool openPort(std::string path);
+    bool openDevice(std::string path);
 
     /**
      * @brief Closes the currently opened uart port.
      * @return true If the port was successfully closed.
      * @return false If the port could not be closed.
      */
-    bool closePort();
+    bool closeDevice();
 
     /**
      * @brief Initializes the serial interface with the current settings.

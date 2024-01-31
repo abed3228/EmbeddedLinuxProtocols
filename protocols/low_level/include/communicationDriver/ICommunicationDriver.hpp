@@ -33,13 +33,13 @@ public:
      * @return true if the close connection is successful
      * @return false if the close connection is failed
      */
-    virtual bool closePort() = 0;
+    virtual bool closeDevice() = 0;
     /**
      * @brief oprn driver connection
      * @return true if the open connection is successful
      * @return false if the open connection is failed
      */
-    virtual bool openPort(std::string path) = 0;
+    virtual bool openDevice(std::string path) = 0;
     /**
      * @brief
      *
