@@ -2,13 +2,38 @@
 #ifndef STATUS_HPP
 #define STATUS_HPP
 
-enum class status_t
-{
-    SUCCESS = 0,
-    FAILURE,
-    PENDING,
-    ERROR,
-    PORT_ERROR // Added new status for port-related errors
-};
+#define OK 0
+#define INPROGRESS 1
+#define ERR_NO_MESSAGE -1
+#define ERR_NO_RESOURCE -2
+#define ERR_IO_ERROR -3
+#define ERR_NO_MEMORY -4
+#define ERR_INVALID_PARAM -5
+#define ERR_UNREACHABLE -6
+#define ERR_INVALID_ADDR -7
+#define ERR_NOT_IMPLEMENTED -8
+#define ERR_MESSAGE_TRUNCATED -9
+#define ERR_NO_PROGRESS -10
+#define ERR_BUFFER_TOO_SMALL -11
+#define ERR_NO_ELEM -12
+#define ERR_SOME_CONNECTS_FAILED -13
+#define ERR_NO_DEVICE -14
+#define ERR_BUSY -15
+#define ERR_CANCELED -16
+#define ERR_SHMEM_SEGMENT -17
+#define ERR_ALREADY_EXISTS -18
+#define ERR_OUT_OF_RANGE -19
+#define ERR_TIMED_OUT -20
+#define ERR_EXCEEDS_LIMIT -21
+#define ERR_UNSUPPORTED -22
+#define ERR_REJECTED -23
+#define ERR_NOT_CONNECTED -24
+#define ERR_CONNECTION_RESET -25
+#define ERR_FIRST_LINK_FAILURE -40
+#define ERR_LAST_LINK_FAILURE -59
+#define ERR_FIRST_ENDPOINT_FAILURE -60
+#define ERR_LAST_ENDPOINT_FAILURE -79
+#define ERR_TIMEOUT -80
+#define ERR_LAST -100
 
 #endif // STATUS_HPP

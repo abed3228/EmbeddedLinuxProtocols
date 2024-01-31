@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
     do
     {
-        serial.writePort("YOUR COMMAND STRING HERE");
+        serial.writeData("YOUR COMMAND STRING HERE");
         std::cout << "YOUR COMMAND STRING HERE" << std::endl;
         sleep(1);
     } while (!exit_while);

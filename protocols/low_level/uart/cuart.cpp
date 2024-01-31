@@ -22,7 +22,7 @@ uart::uart(const std::string path)
     }
 }
 uart::uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits,
-           uint32_t stopBits, uint32_t timeout = 5, uint32_t vmin = 0)
+           uint32_t stopBits)
 {
     m_isOpen = false;
     m_fd = -1;
@@ -31,8 +31,6 @@ uart::uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits,
     setDataBits(dataBits);
     setParity(parity);
     setStopBits(stopBits);
-    setTimeouts(timeout);
-    setMinCharacter(vmin);
 
     if (!openPort(path))
         throw std::runtime_error("Failed to open port");
@@ -58,6 +56,8 @@ bool uart::openPort(std::string path)
     if (m_fd == -1)
         return false;
     m_isOpen = true;
+    m_fdPoll.fd = m_fd;
+    m_fdPoll.events = POLLIN;
     return true;
 }
 bool uart::closePort()
@@ -92,24 +92,41 @@ bool uart::initSerialInterface()
     // Enable receiver and set local mode
     m_options.c_cflag |= (CLOCAL | CREAD);
 
-    // Set timeouts
-    m_options.c_cc[VTIME] = m_timeout; // Timeout in deciseconds
-    m_options.c_cc[VMIN] = m_vmin;     // Minimum number of characters to read
-
     // Apply the configuration
     if (tcsetattr(m_fd, TCSANOW, &m_options) != 0)
         return false;
 
     return true;
 }
-ssize_t uart::writePort(const std::string buff)
+ssize_t uart::writeData(const std::string buff)
 {
     return write(m_fd, buff.c_str(), buff.length());
 }
-ssize_t uart::readPort(std::string &buff, uint32_t sizeRead)
+
+ssize_t uart::readData(std::string &buff, uint32_t sizeRead, uint32_t maxTimeOut)
 {
-    buff.resize(sizeRead);
-    return read(m_fd, &buff[0], sizeRead);
+    // Calculate end time
+    auto endTime = std::chrono::steady_clock::now() + std::chrono::seconds(maxTimeOut);
+
+    while (std::chrono::steady_clock::now() < endTime)
+    {
+        int ret = poll(&m_fdPoll, 1, m_timeout * 1000);
+        if (ret > 0 && (m_fdPoll.revents & POLLIN))
+        {
+            buff.resize(sizeRead);
+            return read(m_fd, &buff[0], sizeRead);
+        }
+        else if (ret < 0)
+            return ERR_IO_ERROR;
+        /*
+        else{
+            //timeout
+        }
+        */
+    }
+
+    // Timeout reached
+    return ERR_TIMEOUT;
 }
 
 bool uart::setBaudRate(BaudRate baudRate)
@@ -190,6 +207,8 @@ bool uart::setTimeouts(uint32_t timeouts)
     // Set read timeout (vtime) based on the provided timeouts parameter
     // vtime is set in tenths of a second (deciseconds)
     m_timeout = timeouts;
+    m_time.tv_sec = m_timeout;
+    m_time.tv_nsec = 0;
     return true; // Indicate successful setting
 }
 

@@ -29,6 +29,9 @@
 #include <sys/wait.h>  /* Wait for Process Termination */
 #include <stdlib.h>    /* General Utilities */
 #include <fcntl.h>
+#include <poll.h>
+#include <time.h>
+#include <chrono>
 #include "../include/communicationDriver/ICommunicationDriver.hpp"
 #include "../../include/status/status.hpp"
 
@@ -68,7 +71,7 @@ public:
      * @default vmin = 0
 
      */
-    uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits, uint32_t stopBits, uint32_t timeout, uint32_t vmin);
+    uart(std::string path, BaudRate baudRate, char parity, uint32_t dataBits, uint32_t stopBits);
 
     /**
      * @brief Destructor for uart object.
@@ -87,15 +90,16 @@ public:
      * @param buff The data buffer to write.
      * @return ssize_t The number of bytes written or -1 if an error occurred.
      */
-    ssize_t writePort(const std::string buff);
+    ssize_t writeData(const std::string buff);
 
     /**
      * @brief Reads data from the uart port.
      * @param buff Reference to the buffer where read data will be stored.
      * @param sizeRead The number of bytes to read.
+     * @param maxTimeOut max time in sec.
      * @return ssize_t The number of bytes read or -1 if an error occurred.
      */
-    ssize_t readPort(std::string &buff, uint32_t sizeRead);
+    ssize_t readData(std::string &buff, uint32_t sizeRead, uint32_t maxTimeOut);
 
 private:
     BaudRate m_baudRate;
@@ -104,7 +108,9 @@ private:
     uint32_t m_stopBits; // m_options.c_cflag
     uint32_t m_timeout;
     uint32_t m_vmin;
+    struct timespec m_time;
     struct termios m_options;
+    struct pollfd m_fdPoll;
 
     // Private copy constructor (deleted)
     uart(const uart &) = delete;
@@ -194,7 +200,7 @@ private:
     static constexpr uint32_t default_parity = 'n';
     static constexpr uint32_t default_dataBits = 8;
     static constexpr uint32_t default_stopBits = 1;
-    static constexpr uint32_t default_timeout = 5;
+    static constexpr uint32_t default_timeout = 10;
     static constexpr uint32_t default_vmin = 0;
 };
 

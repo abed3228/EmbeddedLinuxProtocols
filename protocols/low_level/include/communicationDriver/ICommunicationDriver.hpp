@@ -48,7 +48,7 @@ public:
      * @return ssize_t On success, the number of bytes written is returned.  On error,
                -1 is returned, and errno is set to indicate the error.
      */
-    virtual ssize_t writePort(const std::string buff) = 0;
+    virtual ssize_t writeData(const std::string buff) = 0;
     /**
      * @brief
      *
@@ -56,7 +56,7 @@ public:
      * @param length
      * @return ssize_t
      */
-    virtual ssize_t readPort(std::string &buff, uint32_t sizeRead) = 0;
+    virtual ssize_t readData(std::string &buff, uint32_t sizeRead, uint32_t maxTimeOut) = 0;
 };
 
 #endif // COMMUNICATION_DRIVER_HPP

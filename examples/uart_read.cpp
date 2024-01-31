@@ -26,8 +26,7 @@ int main(int argc, char **argv)
     do
     {
         std::string strRead;
-        std::cout << serial.readPort(strRead, 255) << " " << strRead << std::endl;
-        sleep(1);
+        std::cout << serial.readData(strRead, 255, 10) << " " << strRead << std::endl;
     } while (!exit_while);
 
     return 0;
