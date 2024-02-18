@@ -5,7 +5,7 @@
 - I2C
 - UART 
 - SPI
-- GPI
+- GPIO
 
 ### Networking
 - TCP
